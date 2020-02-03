@@ -1,6 +1,9 @@
 #ifndef KYTHE_CXX_INDEXER_CXX_TESTDATA_LIBRARIES_PROTO_PARSETEXTPROTO_H_
 #define KYTHE_CXX_INDEXER_CXX_TESTDATA_LIBRARIES_PROTO_PARSETEXTPROTO_H_
 
+#include "absl/strings/string_view.h"
+#include "absl/types/source_location.h"
+
 // The following declarations mimick the code structure of ParseProtoHelper.
 struct StringPiece {
   StringPiece(const char* str) {}  // NOLINT
@@ -17,16 +20,15 @@ struct ParseProtoHelper {
 };
 }  // namespace internal
 
-internal::ParseProtoHelper ParseTextProtoOrDieAt(StringPiece asciipb,
-                                                 bool allow_partial,
-                                                 StringPiece file, int line);
+internal::ParseProtoHelper ParseTextProtoOrDie(
+    absl::string_view asciipb, ParserConfig config,
+    absl::SourceLocation loc ABSL_LOC_CURRENT_DEFAULT_ARG);
 
 }  // namespace parse_proto
 }  // namespace contrib
 }  // namespace proto2
 
 #define PARSE_TEXT_PROTO(asciipb) \
-    ::proto2::contrib::parse_proto::ParseTextProtoOrDieAt( \
-        asciipb, false, __FILE__, __LINE__)
+    ::proto2::contrib::parse_proto::ParseTextProtoOrDie(asciipb, {}, ABSL_LOC)
 
 #endif  // KYTHE_CXX_INDEXER_CXX_TESTDATA_LIBRARIES_PROTO_PARSETEXTPROTO_H_
