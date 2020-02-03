@@ -373,12 +373,12 @@ void GoogleProtoLibrarySupport::InspectCallExpr(
   const clang::StringLiteral* Literal = nullptr;
   if (const auto* const HelperCallExpr =
           clang::dyn_cast<clang::CallExpr>(ParseProtoExpr)) {
-    // We're matching against a call to ParseTextProtoOrDieAt, a function
+    // We're matching against a call to ParseTextProtoOrDie, a function
     // template that returns some proto type T via ParseProtoHelper's
     // operator() (which performs the actual message parsing).
     // Get the inner stringpiece.
-    if (HelperCallExpr->getNumArgs() != 4) {
-      LOG(ERROR) << "Unknown signature for ParseTextProtoOrDieAt";
+    if (HelperCallExpr->getNumArgs() != 3) {
+      LOG(ERROR) << "Unknown signature for ParseTextProtoOrDie";
       return;
     }
     const auto* const StringpieceCtorExpr =
