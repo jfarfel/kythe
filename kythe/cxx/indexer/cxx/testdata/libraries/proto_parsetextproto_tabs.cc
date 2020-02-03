@@ -2,11 +2,13 @@
 #include "message.proto.h"
 #include "parsetextproto.h"
 
+#include "absl/types/source_location.h"
+
 class string;
 
 int main() {
   const some::package::Outer msg =
-      ::proto2::contrib::parse_proto::ParseTextProtoOrDieAt(
+      ::proto2::contrib::parse_proto::ParseTextProtoOrDie(
           //- @inner ref InnerAccessor
           " inner {"
           //- @my_int ref MyIntAccessor
@@ -14,7 +16,7 @@ int main() {
           " }"
           //- @my_string ref MyStringAccessor
           "	my_string: 'blah'",
-          false, __FILE__, __LINE__);
+	  {}, ABSL_LOC);
   //- @my_string ref MyStringAccessor
   msg.my_string();
   //- @inner ref InnerAccessor
